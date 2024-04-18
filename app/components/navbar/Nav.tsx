@@ -1,0 +1,47 @@
+import React from 'react'
+import Logo from "@/public/images/logo.png"
+import Link from 'next/link'
+import Image from 'next/image'
+import { getServerSession } from 'next-auth'
+import { authOptions } from '@/auth'
+import User from '../Helper/User'
+
+const Nav = async () => {
+    const session = await getServerSession(authOptions)
+    console.log(session)
+  return (
+    <div className=' h-[13vh] overflow-hidden shadow-md bg-zinc-800'>
+        <div className='w-[90%] md:w-[80%] h-[100%] mx-auto flex items-center justify-between'>
+
+        <div className='w-[150px] h-[50px] md:w-[200px] md:h-[80px]'>
+            <Link href='/'>
+                <Image src={Logo} alt='logo' width={600} height={600} className='w-[100%] h-[100%]' />
+            </Link>
+        </div>
+            <div className='flex items-center space-x-4'>
+                {!session && (
+                    <Link href='/signup'>
+                        <button className='px-4 oy-1.5 text-[14px] sm:text-[16px] sm:px-6 sm:py-2 bg-red-600
+                        font-semibold text-white rounded-lg hover:bg-red-800 transition-all duration-300'>
+                            Login
+                        </button>
+                    </Link>
+                )}
+                {session && <User session={session}/>}
+                {!session && (
+                    <Link href=''>
+                        <button className='px-4 oy-1.5 text-[14px] sm:text-[16px] sm:px-6 sm:py-2 bg-blue-600
+                        font-semibold text-white rounded-lg hover:bg-blue-800 transition-all duration-300'>
+                            Publicar Emprego
+                        </button>
+                    </Link>
+                )}
+            </div>
+
+        </div>
+      
+    </div>
+  )
+}
+
+export default Nav
